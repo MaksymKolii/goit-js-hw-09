@@ -1,9 +1,8 @@
-
 let timerId = null;
 const refs = getRefs();
 
-refs.startBtn.addEventListener('click', onClickStartBtn)
-refs.stopBtn.addEventListener('click', onClickStopBtn)
+refs.startBtn.addEventListener('click', onClickStartBtn);
+refs.stopBtn.addEventListener('click', onClickStopBtn);
 
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
@@ -16,18 +15,20 @@ function getRefs() {
   };
 }
 
-function onClickStartBtn(){
+function onClickStartBtn() {
   refs.startBtn.disabled = true;
   refs.stopBtn.disabled = false;
+  setBcgColorOnBody()
 
-  timerId = setInterval(() => {
-    document.body.style.background = getRandomHexColor();
-  }, 1000);
-
+  timerId = setInterval(setBcgColorOnBody, 2000);
 }
 
-function onClickStopBtn(){
+function onClickStopBtn() {
   refs.startBtn.disabled = false;
   refs.stopBtn.disabled = true;
   clearInterval(timerId);
+}
+
+function setBcgColorOnBody() {
+  document.body.style.background = getRandomHexColor();
 }
