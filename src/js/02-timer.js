@@ -3,24 +3,19 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import 'flatpickr/dist/flatpickr.min.css';
 
 
-let finalTime =0;
+let finalTime = 0;
+let intervalId = null;
 
 const refs = {
   input: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('button[data-start]'),
-  // days: document.querySelector('span[data-days]'),
-  // hourss: document.querySelector('span[data-hours]'),
-  // minutes: document.querySelector('span[data-minutes]'),
-  // seconda: document.querySelector('span[data-seconds]'),
-  values: document.querySelectorAll('.value'),
+  days: document.querySelector('span[data-days]'),
+  hourss: document.querySelector('span[data-hours]'),
+  minutes: document.querySelector('span[data-minutes]'),
+  seconds: document.querySelector('span[data-seconds]'),
 };
 
-refs.startBtn.addEventListener('click', () => {
-  console.log('qwqwqwqw');
-});
-
-
-
+refs.startBtn.addEventListener('click', onButtonClick);
 refs.startBtn.disabled = true;
 
 const options = {
@@ -36,18 +31,46 @@ const options = {
       return;
     }
     refs.startBtn.disabled = false;
-     finalTime=selectedDates[0].getTime();
+     finalTime=selectedDates[0];
   },
 };
 
 flatpickr('input#datetime-picker', options);
 
+const timer = {
 
-function updateClockFace({ days, hours, minutes, seconds }) {
-  refs.clockface.textContent = `${days}:${hours}:${minutes}:${seconds}`;
+  start(){
+     intervalId =setInterval(()=>{
+      const realTime = Date.now();
+      const diff = finalTime - realTime
+      const timeComponents =  convertMs(diff)
+
+      if(diff <1000){
+        clearInterval(intervalId)
+      }
+     updateInterfaceTime(timeComponents)
+      
+     }, 1000)
+
+
+  }
 }
 
-// Принимает число, приводит к строке и добавляет в значение 0,  если число меньше 2-х знакв
+function onButtonClick(){
+  timer.start();
+  refs.startBtn.disabled = true;
+  refs.input.disabled = true;
+}
+
+function updateInterfaceTime({ days, hours, minutes, seconds }) {
+
+  refs.days.textContent = `${days}`;
+  refs.hourss.textContent = `${hours}`;
+  refs.minutes.textContent = `${minutes}`;
+  refs.seconds.textContent = `${seconds}`;
+
+}
+
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
