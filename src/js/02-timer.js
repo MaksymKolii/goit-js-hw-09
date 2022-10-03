@@ -8,10 +8,10 @@ let finalTime =0;
 const refs = {
   input: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('button[data-start]'),
-  days: document.querySelector('span[data-days]'),
-  hourss: document.querySelector('span[data-hours]'),
-  minutes: document.querySelector('span[data-minutes]'),
-  seconda: document.querySelector('span[data-seconds]'),
+  // days: document.querySelector('span[data-days]'),
+  // hourss: document.querySelector('span[data-hours]'),
+  // minutes: document.querySelector('span[data-minutes]'),
+  // seconda: document.querySelector('span[data-seconds]'),
   values: document.querySelectorAll('.value'),
 };
 
