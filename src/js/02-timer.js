@@ -2,25 +2,23 @@ import flatpickr from 'flatpickr';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import 'flatpickr/dist/flatpickr.min.css';
 
-let finalTime = 0;
 const refs = {
-  input: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('button[data-start]'),
-  days: document.querySelector('span[data-days]'),
-  hourss: document.querySelector('span[data-hours]'),
-  minutes: document.querySelector('span[data-minutes]'),
-  seconds: document.querySelector('span[data-seconds]'),
 };
+
+let finalTime = 0;
+refs.startBtn.disabled = true;
 
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+
   onClose(selectedDates) {
     if (selectedDates[0] <= Date.now()) {
       Notify.failure('Please choose a date in the future');
-      refs.startBtn.disabled = true;
+
       return;
     }
     refs.startBtn.disabled = false;
@@ -31,23 +29,26 @@ const options = {
 flatpickr('input#datetime-picker', options);
 
 class Timer {
-  constructor({ onTicTac }) {
+  constructor() {
     this.intervalId = null;
-    this.onTicTac = onTicTac;
+    this.input = document.querySelector('#datetime-picker');
+    this.days = document.querySelector('span[data-days]');
+    this.hours = document.querySelector('span[data-hours]');
+    this.minutes = document.querySelector('span[data-minutes]');
+    this.seconds = document.querySelector('span[data-seconds]');
   }
 
   start() {
     refs.startBtn.disabled = true;
-    refs.input.disabled = true;
+    this.input.disabled = true;
     this.intervalId = setInterval(() => {
-      const realTime = Date.now();
-      const diff = finalTime - realTime;
+      const diff = finalTime - Date.now();
       const timeComponents = this.convertMs(diff);
 
       if (diff < 1000) {
         clearInterval(this.intervalId);
       }
-      this.onTicTac(timeComponents);
+      this.updateInterfaceTime(timeComponents);
     }, 1000);
   }
 
@@ -77,22 +78,15 @@ class Timer {
   addLeadingZero(value) {
     return String(value).padStart(2, '0');
   }
+
+  updateInterfaceTime({ days, hours, minutes, seconds }) {
+    this.days.textContent = `${days}`;
+    this.hours.textContent = `${hours}`;
+    this.minutes.textContent = `${minutes}`;
+    this.seconds.textContent = `${seconds}`;
+  }
 }
 
-const timer = new Timer({
-  onTicTac: updateInterfaceTime,
-});
-
-
-function updateInterfaceTime({ days, hours, minutes, seconds }) {
-  refs.days.textContent = `${days}`;
-  refs.hourss.textContent = `${hours}`;
-  refs.minutes.textContent = `${minutes}`;
-  refs.seconds.textContent = `${seconds}`;
-}
-
+const timer = new Timer();
 
 refs.startBtn.addEventListener('click', timer.start.bind(timer));
-
-
-
