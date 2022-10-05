@@ -28,6 +28,7 @@ const options = {
 
 flatpickr('input#datetime-picker', options);
 
+// options.onClose().then((x)=>console.log(x))
 class Timer {
   constructor() {
     this.intervalId = null;
