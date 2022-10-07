@@ -9,11 +9,11 @@ function onFormSubmit(e) {
   e.preventDefault();
 
   if (
-    !e.currentTarget.elements.delay.value < 0 ||
-    !e.currentTarget.elements.step.value < 0 ||
-    !e.currentTarget.elements.amount.value < 0
+    Number(e.currentTarget.elements.delay.value) < 0 ||
+    Number(e.currentTarget.elements.step.value) < 0 ||
+    Number(e.currentTarget.elements.amount.value) < 0
   ) {
-    return alert('Please input data!');
+    return Notify.warning('Not valid data');
   }
 
   const firstDelay = Number(e.currentTarget.elements.delay.value);
