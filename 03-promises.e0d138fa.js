@@ -1,2 +1,0 @@
-let e=1,o=1e3;for(let n=0;n<6;n+=1)i(e,o).then((({position:e,delay:o})=>{console.log(`✅ Fulfilled promise ${e} in ${o}ms`)})).catch((({position:e,delay:o})=>{console.log(`❌ Rejected promise ${e} in ${o}ms`)})),o+=3e3,e+=1;function i(e,o){const i=Math.random()>.3;return new Promise(((n,t)=>{setTimeout((()=>{i?n({position:e,delay:o}):t({position:e,delay:o})}),o)}))}
-//# sourceMappingURL=03-promises.e0d138fa.js.map
